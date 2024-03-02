@@ -1,4 +1,4 @@
-import { collection, doc, getDoc } from "firebase/firestore";
+import { Timestamp, collection, doc, getDoc } from "firebase/firestore";
 import { firestore } from "../firebase";
 import { Article } from "@/types/article";
 import { createCache, defaultCacheOptions } from "./cache";
@@ -16,9 +16,13 @@ export async function getArticle(id: string, cacheOptions = defaultCacheOptions)
     const docSnap = await getDoc(ref);
 
     if (docSnap.exists()) {
+        const timestamp = docSnap.data().date as Timestamp;
+        const date = timestamp.toDate();
+
         const article = {
-            id: docSnap.id,
             ...docSnap.data(),
+            id: docSnap.id,
+            date
         } as Article;
 
         if (cacheOptions.enabled) articles.add(id, article);
