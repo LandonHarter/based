@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Providers from './components/providers';
+import Header from './components/header/header';
 
 export const metadata: Metadata = {
   title: 'Based | The No BS News Source',
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
+          <Header />
           {children}
         </Providers>
       </body>
