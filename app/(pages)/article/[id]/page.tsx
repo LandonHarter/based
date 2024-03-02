@@ -1,5 +1,6 @@
-import { getArticle } from "@/backend/db/articles";
+import { getArticle, getSourceIcon } from "@/backend/db/articles";
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function ArticlePage(context: { params: { id: string } }) {
@@ -11,7 +12,7 @@ export default async function ArticlePage(context: { params: { id: string } }) {
 
     return (
         <main className="w-screen flex flex-col items-center">
-            <article className="w-5/6 max-w-[1200px] flex flex-col mt-24">
+            <article className="w-5/6 max-w-[1200px] flex flex-col mt-24 mb-8">
                 <h1 className="text-6xl font-bold mb-8 leading-[80px]">{article.title.replaceAll("*", "")}</h1>
 
                 <div className="mb-8 flex items-center">
@@ -30,6 +31,21 @@ export default async function ArticlePage(context: { params: { id: string } }) {
                     </section>
                 ))}
             </article>
+
+            <div className="w-5/6 max-w-[1200px] flex flex-col border-2 border-gray-300 mb-24 p-4 rounded-2xl">
+                <h1 className="mb-4 text-4xl font-medium">Sources</h1>
+                <div className="w-full flex flex-wrap gap-2">
+                    {article.sources.map((source, index) => (
+                        <Link href={source} target="_blank" key={index} className="flex items-center p-4 border-2 border-gray-200 rounded-xl">
+                            <Image src={getSourceIcon(source)} alt={source} width={50} height={50} className="mr-4 rounded-[100%]" />
+                            <div className="flex flex-col">
+                                <p className="text-lg font-bold">{new URL(source).hostname.replaceAll("www.", "")}</p>
+                                <p className="text-lg text-gray-500">Read Article</p>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </div>
         </main>
     );
 }

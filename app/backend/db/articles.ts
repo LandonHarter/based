@@ -31,3 +31,9 @@ export async function getArticle(id: string, cacheOptions = defaultCacheOptions)
         return null;
     }
 }
+
+export function getSourceIcon(sourceUrl: string) {
+    const url = new URL(sourceUrl);
+    const domain = url.hostname;
+    return `https://api.faviconkit.com/${domain}/144`;
+}
