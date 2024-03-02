@@ -1,12 +1,12 @@
-import { Timestamp, collection, doc, getDoc } from "firebase/firestore";
+import { Timestamp, collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { firestore } from "../firebase";
 import { Article } from "@/types/article";
 import { createCache, defaultCacheOptions } from "./cache";
 
-const articles = createCache<Article>();
+const articlesCache = createCache<Article>();
 export async function getArticle(id: string, cacheOptions = defaultCacheOptions) {
     if (cacheOptions.enabled) {
-        const cached = articles.get(id);
+        const cached = articlesCache.get(id);
         if (cached && !cacheOptions.forceRefresh) {
             return cached;
         }
@@ -25,11 +25,32 @@ export async function getArticle(id: string, cacheOptions = defaultCacheOptions)
             date
         } as Article;
 
-        if (cacheOptions.enabled) articles.add(id, article);
+        if (cacheOptions.enabled) articlesCache.add(id, article);
         return article;
     } else {
         return null;
     }
+}
+
+export async function getArticles(cacheOptions = defaultCacheOptions) {
+    const articlesQuery = query(collection(firestore, "articles"));
+    const articlesSnapshot = await getDocs(articlesQuery);
+
+    const articles: Article[] = [];
+    articlesSnapshot.forEach((doc) => {
+        const timestamp = doc.data().date as Timestamp;
+        const date = timestamp.toDate();
+        const article = {
+            ...doc.data(),
+            id: doc.id,
+            date
+        } as Article;
+
+        articles.push(article);
+        if (cacheOptions.enabled) articlesCache.add(doc.id, article);
+    });
+
+    return articles;
 }
 
 export function getSourceIcon(sourceUrl: string) {

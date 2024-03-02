@@ -9,7 +9,8 @@ export function parseResponse(sources: Source[], response: string) {
         title: lines[0],
         content: lines.slice(1).join("\n"),
         date: new Date(),
-        sources: sources.map((source) => source.url)
+        sources: sources.map((source) => source.url),
+        image: "/misc/missing.jpg"
     } as Article;
 
     return article;

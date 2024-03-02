@@ -4,4 +4,5 @@ export type Article = {
     date: Date;
     content: string;
     sources: string[];
+    image: string;
 };
