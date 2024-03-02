@@ -17,7 +17,7 @@ export default async function ArticlesPage() {
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat"
                         }} />
-                        <h2 className="text-xl font-bold mb-2 line-clamp-2 overflow-ellipsis">{article.title.replaceAll("*", "")}</h2>
+                        <h2 className="text-xl font-bold mb-2 line-clamp-2 overflow-ellipsis">{article.title}</h2>
                         <p className="text-base text-gray-500">{article.date.toDateString()}</p>
                     </Link>
                 ))}

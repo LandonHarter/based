@@ -10,7 +10,7 @@ export const metadata = {
 };
 export default function AnalyzePage() {
     return (
-        <main>
+        <main className="w-screen flex flex-col items-center">
             <AnalyzeForm />
         </main>
     );

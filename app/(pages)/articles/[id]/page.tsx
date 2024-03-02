@@ -13,7 +13,7 @@ export default async function ArticlePage(context: { params: { id: string } }) {
     return (
         <main className="w-screen flex flex-col items-center">
             <article className="w-5/6 max-w-[1200px] flex flex-col mt-24 mb-8">
-                <h1 className="text-6xl font-bold mb-8 leading-[80px]">{article.title.replaceAll("*", "")}</h1>
+                <h1 className="text-6xl font-bold mb-8 leading-[80px]">{article.title}</h1>
 
                 {article.image != "/misc/missing.jpg" &&
                     <div className="rounded-2xl w-full h-[450px] max-h-[450px] object-contain mb-8" style={{
