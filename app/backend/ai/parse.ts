@@ -1,3 +1,5 @@
+"use server";
+
 import { Article } from "@/types/article";
 import { Source } from "@/types/source";
 import { generateId } from "@/utils/id";

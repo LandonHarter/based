@@ -1,3 +1,5 @@
+"use server";
+
 import GoogleImages from 'google-images';
 const client = new GoogleImages(process.env.CSE_ID!, process.env.NEXT_PUBLIC_FIREBASE_API_KEY!);
 
