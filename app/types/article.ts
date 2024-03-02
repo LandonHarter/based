@@ -1,9 +1,6 @@
 export type Article = {
     id: string;
     title: string;
-    author: string;
-    date: string;
+    date: Date;
     content: string;
-    category: string;
-    image: string;
 };
