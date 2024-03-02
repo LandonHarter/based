@@ -1,4 +1,4 @@
-import { Timestamp, collection, doc, getDoc, getDocs, query } from "firebase/firestore";
+import { Timestamp, collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
 import { firestore } from "../firebase";
 import { Article } from "@/types/article";
 import { createCache, defaultCacheOptions } from "./cache";
@@ -33,7 +33,7 @@ export async function getArticle(id: string, cacheOptions = defaultCacheOptions)
 }
 
 export async function getArticles(cacheOptions = defaultCacheOptions) {
-    const articlesQuery = query(collection(firestore, "articles"));
+    const articlesQuery = query(collection(firestore, "articles"), orderBy("date", "desc"));
     const articlesSnapshot = await getDocs(articlesQuery);
 
     const articles: Article[] = [];

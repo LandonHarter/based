@@ -13,7 +13,7 @@ export default function Header() {
                     <Link href="/"><Image src="/brand/logo.png" alt="Based Logo" width={157} height={50} /></Link>
                 </NavbarBrand>
                 <NavbarContent className="gap-20 !justify-center">
-                    <Link href="/featured"><NavbarItem className="text-xl font-medium">Featured</NavbarItem></Link>
+                    <Link href="/articles"><NavbarItem className="text-xl font-medium">Articles</NavbarItem></Link>
                     <NavbarCategories />
                     <Link href="/about"><NavbarItem className="text-xl font-medium">About</NavbarItem></Link>
                 </NavbarContent>

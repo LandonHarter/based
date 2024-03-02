@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarItem } from "@nextui-org/react";
+import Image from "next/image";
 
 const ChevronDown = ({ fill, size, height, width, ...props }: any) => {
     return (
@@ -47,8 +48,21 @@ export default function NavbarCategories() {
                     base: "gap-4",
                 }}
             >
-                <DropdownItem key="test">
-                    Test
+                <DropdownItem key="test" href="/articles" startContent={<Image src="/categories/us.png" width={48} height={48} alt="US" />}>
+                    <span className="text-lg font-bold">US</span>
+                    <p className="text-gray-500">The latest news from the US</p>
+                </DropdownItem>
+                <DropdownItem key="test" href="/articles" startContent={<Image src="/categories/world.png" width={48} height={48} alt="World" />}>
+                    <span className="text-lg font-bold">World</span>
+                    <p className="text-gray-500">The latest world news</p>
+                </DropdownItem>
+                <DropdownItem key="test" href="/articles" startContent={<Image src="/categories/business.png" width={48} height={48} alt="Business" />}>
+                    <span className="text-lg font-bold">Business</span>
+                    <p className="text-gray-500">Check on the markets!</p>
+                </DropdownItem>
+                <DropdownItem key="test" href="/articles" startContent={<Image src="/categories/sports.png" width={48} height={48} alt="Sports" />}>
+                    <span className="text-lg font-bold">Sports</span>
+                    <p className="text-gray-500">Keep up on your favorite leagues and teams</p>
                 </DropdownItem>
             </DropdownMenu>
         </Dropdown>
