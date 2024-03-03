@@ -15,7 +15,7 @@ export default function Header() {
                 <NavbarContent className="gap-20 !justify-center">
                     <Link href="/articles"><NavbarItem className="text-xl font-medium">Articles</NavbarItem></Link>
                     <NavbarCategories />
-                    <Link href="/about"><NavbarItem className="text-xl font-medium">About</NavbarItem></Link>
+                    <Link href="/"><NavbarItem className="text-xl font-medium">About</NavbarItem></Link>
                 </NavbarContent>
                 <NavbarContent justify="end">
                     <Link href="/analyze"><Button color="primary" className="font-medium text-base py-[22px]">Analyze Story</Button></Link>
