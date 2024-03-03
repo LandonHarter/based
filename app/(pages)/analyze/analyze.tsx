@@ -51,7 +51,7 @@ export default function AnalyzeForm() {
                         <span className="font-medium text-2xl text-gray-500">No sources added</span>
                     </div>
                 ) : (
-                    <div className="w-full h-full flex flex-col p-2">
+                    <div className="w-full h-full flex flex-col p-2 overflow-y-scroll overflow-x-hidden">
                         {sources.map((source, index) => (
                             <div className="p-3 pb-4 grid grid-cols-[50px_1fr_50px] gap-4 w-[500px] border-b-2 border-gray-200 h-fit" key={index}>
                                 <Image src={getSourceIcon(source.url)} alt="Fox News" width={50} height={50} className="rounded-xl" />
@@ -79,7 +79,13 @@ export default function AnalyzeForm() {
             <form action={async (data: FormData) => {
                 setAnalyzing(true);
                 const analyzed = await analyzeSources(sources);
-                const article = await parseResponse(sources, analyzed);
+                if (!analyzed.success || !analyzed.response) {
+                    toast.error("An error occurred while analyzing the sources");
+                    setAnalyzing(false);
+                    return;
+                }
+
+                const article = await parseResponse(sources, analyzed.response);
                 const articleId = await createArticle(article);
                 router.push(`/articles/${articleId}`);
             }} className="flex items-center gap-2">

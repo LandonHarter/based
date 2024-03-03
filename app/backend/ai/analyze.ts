@@ -9,10 +9,27 @@ export async function analyzeSources(sources: Source[]) {
     const content = sources.map((source) => "From " + source.source + " - " + source.content).join("\n\n");
     const prompt = context + content;
 
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    for (let i = 0; i < model.safetySettings.length; i++) model.safetySettings[i].threshold = HarmBlockThreshold.BLOCK_NONE;
+    const model = genAI.getGenerativeModel({
+        model: "gemini-pro", safetySettings: [
+            { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+            { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+            { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+            { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE }
+        ]
+    });
 
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-    return text;
+    try {
+        const result = await model.generateContent(prompt);
+        const text = result.response.text();
+        return {
+            success: true,
+            response: text
+
+        };
+    } catch (e) {
+        return {
+            success: false,
+            response: null
+        };
+    }
 }
