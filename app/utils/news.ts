@@ -14,6 +14,8 @@ export function getNewsSite(url: string) {
             return 'NBC News';
         case 'washingtonpost':
             return 'Washington Post';
+        case 'cbsnews':
+            return 'CBS News';
         default:
             return 'Unknown';
     }

@@ -9,12 +9,13 @@ import { Button, Input, Modal, ModalBody, ModalContent, Tooltip, useDisclosure }
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import animations from "./animations.module.css";
 import { getSourceIcon } from "@/backend/db/articles";
 import { formatNumber } from "@/utils/format";
+import Loading from "@/components/loading/loading";
 
 export default function AnalyzeForm() {
     const [sources, setSources] = useState<Source[]>([]);
@@ -26,8 +27,22 @@ export default function AnalyzeForm() {
     const [numCharacters, setNumCharacters] = useState(0);
     const MAX_CHARACTERS = 75000;
 
+    const [isPending, startTransition] = useTransition();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const router = useRouter();
+
+    async function synthesizeSources(data: FormData) {
+        const analyzed = await analyzeSources(sources);
+        if (!analyzed.success || !analyzed.response) {
+            toast.error("An error occurred while analyzing the sources");
+            setAnalyzing(false);
+            return;
+        }
+
+        const article = await parseResponse(sources, analyzed.response);
+        const articleId = await createArticle(article);
+        router.push(`/articles/${articleId}`);
+    }
 
     useEffect(() => {
         let total = 0;
@@ -78,16 +93,9 @@ export default function AnalyzeForm() {
 
             <form action={async (data: FormData) => {
                 setAnalyzing(true);
-                const analyzed = await analyzeSources(sources);
-                if (!analyzed.success || !analyzed.response) {
-                    toast.error("An error occurred while analyzing the sources");
-                    setAnalyzing(false);
-                    return;
-                }
-
-                const article = await parseResponse(sources, analyzed.response);
-                const articleId = await createArticle(article);
-                router.push(`/articles/${articleId}`);
+                startTransition(() => {
+                    synthesizeSources(data);
+                });
             }} className="flex items-center gap-2">
                 <Button className="font-medium text-lg py-6" startContent={
                     <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
@@ -156,6 +164,7 @@ export default function AnalyzeForm() {
                                         BBC<br />
                                         NPR<br />
                                         Washington Post<br />
+                                        CBS<br />
                                     </div>
                                 )}><span className="text-blue-500 cursor-pointer">supported news sites</span></Tooltip></p>
                             </ModalBody>
@@ -163,6 +172,10 @@ export default function AnalyzeForm() {
                     )}
                 </ModalContent>
             </Modal>
+
+            {analyzing && (
+                <Loading />
+            )}
         </div>
     )
 }

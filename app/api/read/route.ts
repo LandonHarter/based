@@ -37,6 +37,9 @@ export async function GET(req: Request) {
         case 'washingtonpost':
             content = washingtonpost(document);
             break;
+        case 'cbsnews':
+            content = cbs(document);
+            break;
         default:
             return new Response('Unsupported website', { status: 400 });
     }
@@ -90,6 +93,12 @@ function nbc(document: Document) {
 
 function washingtonpost(document: Document) {
     const paragraphs = document.querySelectorAll('.article-body p');
+    const content = Array.from(paragraphs).map(p => p.textContent).join('\n');
+    return content;
+}
+
+function cbs(document: Document) {
+    const paragraphs = document.querySelectorAll('.content__body p');
     const content = Array.from(paragraphs).map(p => p.textContent).join('\n');
     return content;
 }
