@@ -36,17 +36,6 @@ export default function HomePage() {
         <Link href="/analyze"><Button className="font-medium text-xl py-6">Analyze a Story</Button></Link>
         <Link href="/articles"><Button color="primary" className="font-medium text-xl py-6 text-white">Start Reading</Button></Link>
       </div>
-
-      <h1>NEXT_PUBLIC_FIREBASE_API_KEY="{process.env.NEXT_PUBLIC_FIREBASE_API_KEY}"</h1>
-      <h1>NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="{process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}"</h1>
-      <h1>NEXT_PUBLIC_FIREBASE_PROJECT_ID="{process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}"</h1>
-      <h1>NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="{process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}"</h1>
-      <h1>NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="{process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID}"</h1>
-      <h1>NEXT_PUBLIC_FIREBASE_APP_ID="{process.env.NEXT_PUBLIC_FIREBASE_APP_ID}"</h1>
-      <h1>GEMINI_API_KEY="{process.env.GEMINI_API_KEY}"</h1>
-      <h1>FIREBASE_CLIENT_EMAIL="{process.env.FIREBASE_CLIENT_EMAIL}"</h1>
-      <h1>CSE_ID="{process.env.CSE_ID}"</h1>
-      <h1>FIREBASE_PRIVATE_KEY="{process.env.FIREBASE_PRIVATE_KEY}"</h1>
     </main>
   );
 }
