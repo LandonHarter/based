@@ -20,6 +20,8 @@ export default function HomePage() {
         <Link href="/analyze"><Button className="font-medium text-xl py-6">Analyze a Story</Button></Link>
         <Link href="/articles"><Button color="primary" className="font-medium text-xl py-6 text-white">Start Reading</Button></Link>
       </div>
+
+      {JSON.stringify(process.env)}
     </main>
   );
 }
