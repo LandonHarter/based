@@ -24,7 +24,6 @@ export async function analyzeSources(sources: Source[]) {
         return {
             success: true,
             response: text
-
         };
     } catch (e) {
         return {

@@ -9,7 +9,7 @@ import { Button, Input, Modal, ModalBody, ModalContent, Tooltip, useDisclosure }
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import animations from "./animations.module.css";
@@ -29,6 +29,8 @@ export default function AnalyzeForm() {
 
     const [isPending, startTransition] = useTransition();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+    const analyzeForm = useRef<HTMLFormElement>(null);
     const router = useRouter();
 
     async function synthesizeSources(data: FormData) {
@@ -91,18 +93,16 @@ export default function AnalyzeForm() {
                 )}
             </div>
 
-            <form action={async (data: FormData) => {
-                setAnalyzing(true);
-                startTransition(() => {
-                    synthesizeSources(data);
-                });
-            }} className="flex items-center gap-2">
+            <form action={synthesizeSources} ref={analyzeForm} className="flex items-center gap-2">
                 <Button className="font-medium text-lg py-6" startContent={
                     <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
                         <path d="M4 12H20M12 4V20" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 } onPress={onOpen}>Add Source</Button>
-                <Button color="primary" className="font-medium text-lg py-6" type="submit" isLoading={analyzing}>Analyze Story</Button>
+                <Button color="primary" className="font-medium text-lg py-6" isLoading={analyzing} onPress={() => {
+                    setAnalyzing(true);
+                    analyzeForm.current?.requestSubmit();
+                }}>Analyze Story</Button>
             </form>
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
