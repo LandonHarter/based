@@ -5,7 +5,7 @@ import { analyzeSources } from "@/backend/ai/analyze";
 import { parseResponse } from "@/backend/ai/parse";
 import { Source } from "@/types/source";
 import { getNewsSite } from "@/utils/news";
-import { Button, Input, Modal, ModalBody, ModalContent, useDisclosure } from "@nextui-org/react";
+import { Button, Input, Modal, ModalBody, ModalContent, Tooltip, useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -148,7 +148,16 @@ export default function AnalyzeForm() {
                                     setLoadingSources(false);
                                     onClose();
                                 }} isLoading={loadingSources}>Add Source</Button>
-                                <p className="text-gray-500 text-sm">Take a look at our <Link href="" className="text-blue-500" target="_blank">supported news sites</Link></p>
+                                <p className="text-gray-500 text-sm">Take a look at our <Tooltip placement="bottom" content={(
+                                    <div className="p-1">
+                                        Fox News<br />
+                                        CNN<br />
+                                        NBC<br />
+                                        BBC<br />
+                                        NPR<br />
+                                        Washington Post<br />
+                                    </div>
+                                )}><span className="text-blue-500 cursor-pointer">supported news sites</span></Tooltip></p>
                             </ModalBody>
                         </>
                     )}
