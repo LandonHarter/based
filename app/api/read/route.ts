@@ -5,6 +5,8 @@ export async function GET(req: Request) {
     const source = headers.get('source');
     if (!source) {
         return new Response('No source provided', { status: 400 });
+    } else if (!validUrl(source)) {
+        return new Response('Invalid URL', { status: 400 });
     }
 
     const request = await fetch(source);
@@ -43,6 +45,15 @@ export async function GET(req: Request) {
         return new Response('Unable to scrape content', { status: 404 });
     }
     return new Response(content);
+}
+
+function validUrl(url: string) {
+    try {
+        new URL(url);
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 function cnn(document: Document) {

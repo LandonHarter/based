@@ -1,7 +1,7 @@
 "use server";
 
 import { Source } from "@/types/source";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function analyzeSources(sources: Source[]) {
@@ -10,6 +10,8 @@ export async function analyzeSources(sources: Source[]) {
     const prompt = context + content;
 
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    for (let i = 0; i < model.safetySettings.length; i++) model.safetySettings[i].threshold = HarmBlockThreshold.BLOCK_NONE;
+
     const result = await model.generateContent(prompt);
     const text = result.response.text();
     return text;
