@@ -4,6 +4,7 @@ import { Source } from "@/types/source";
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
+export const maxDuration = 30;
 export async function analyzeSources(sources: Source[]) {
     const context = "Write a news article based on the following sources, eliminating bias and misinformation: ";
     const content = sources.map((source) => "From " + source.source + " - " + source.content).join("\n\n");
