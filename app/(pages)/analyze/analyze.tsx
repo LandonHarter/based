@@ -16,6 +16,7 @@ import animations from "./animations.module.css";
 import { getSourceIcon } from "@/backend/db/articles";
 import { formatNumber } from "@/utils/format";
 import Loading from "@/components/loading/loading";
+import { getKeys } from "@/backend/keys";
 
 export default function AnalyzeForm() {
     const [sources, setSources] = useState<Source[]>([]);
@@ -33,15 +34,19 @@ export default function AnalyzeForm() {
     const analyzeForm = useRef<HTMLFormElement>(null);
     const router = useRouter();
 
-    async function synthesizeSources(data: FormData) {
-        const analyzed = await analyzeSources(sources);
+    const [keys, setKeys] = useState<{ gemini: string, cseId: string } | null>(null);
+
+    async function synthesizeSources() {
+        if (!keys) return;
+
+        const analyzed = await analyzeSources(keys.gemini, sources);
         if (!analyzed.success || !analyzed.response) {
             toast.error("An error occurred while analyzing the sources");
             setAnalyzing(false);
             return;
         }
 
-        const article = await parseResponse(sources, analyzed.response);
+        const article = await parseResponse(sources, analyzed.response, keys.cseId);
         const articleId = await createArticle(article);
         router.push(`/articles/${articleId}`);
     }
@@ -55,6 +60,11 @@ export default function AnalyzeForm() {
 
         setNumCharacters(total);
     }, [sources]);
+
+    useEffect(() => {
+        if (isPending || sources.length === 0) return;
+        synthesizeSources();
+    }, [isPending]);
 
     return (
         <div className="flex flex-col items-center mt-32">
@@ -93,7 +103,11 @@ export default function AnalyzeForm() {
                 )}
             </div>
 
-            <form action={synthesizeSources} ref={analyzeForm} className="flex items-center gap-2">
+            <form action={async () => {
+                startTransition(async () => {
+                    setKeys(await getKeys() as any);
+                });
+            }} ref={analyzeForm} className="flex items-center gap-2">
                 <Button className="font-medium text-lg py-6" startContent={
                     <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
                         <path d="M4 12H20M12 4V20" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

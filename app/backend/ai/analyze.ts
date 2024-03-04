@@ -1,14 +1,14 @@
-"use server";
+"use client";
 
 import { Source } from "@/types/source";
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-export async function analyzeSources(sources: Source[]) {
+export async function analyzeSources(apiKey: string, sources: Source[]) {
     const context = "Write a news article based on the following sources, eliminating bias and misinformation: ";
     const content = sources.map((source) => "From " + source.source + " - " + source.content).join("\n\n");
     const prompt = context + content;
 
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
         model: "gemini-pro", safetySettings: [
             { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },

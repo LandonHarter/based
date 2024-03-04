@@ -1,9 +1,9 @@
 "use server";
 
 import GoogleImages from 'google-images';
-const client = new GoogleImages(process.env.CSE_ID!, process.env.NEXT_PUBLIC_FIREBASE_API_KEY!);
 
-export async function generateImage(title: string) {
+export async function generateImage(title: string, cseId: string) {
+    const client = new GoogleImages(cseId, process.env.NEXT_PUBLIC_FIREBASE_API_KEY!);
     const images = await client.search(title, {
         safe: "high"
     });

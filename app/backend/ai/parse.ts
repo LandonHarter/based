@@ -5,13 +5,13 @@ import { Source } from "@/types/source";
 import { generateId } from "@/utils/id";
 import { generateImage } from "./image";
 
-export async function parseResponse(sources: Source[], response: string) {
+export async function parseResponse(sources: Source[], response: string, cseId: string) {
     const lines = response.split("\n");
     const title = lines[0].replaceAll("*", "");
 
     let image = "/misc/missing.jpg";
     try {
-        image = await generateImage(title);
+        image = await generateImage(title, cseId);
     } catch (e) { }
 
     const article = {
